@@ -36,7 +36,9 @@
       <div class="col-md-3" [ngClass]="aplicaCssErro(cep)">
         <label for="cep" class="col-sm-3 col-form-label" >CEP</label>
         <input type="text" class="form-control" id="cep" name="cep" ngModel required
-        #cep="ngModel" [class.is-invalid]="!cep.valid && cep.touched"/>
+        #cep="ngModel" [class.is-invalid]="!cep.valid && cep.touched"
+        (blur)="consultaCEP($event.target,f)"
+        />
         <app-campo-control-erro mensagemErro="CEP é obrigatório." 
           [mostrarErro]="verificaValidTouched(cep)">
         </app-campo-control-erro>
@@ -63,7 +65,7 @@
         <label for="rua">Rua</label>
       </div>
       <div class="col-sm-12">
-        <input type="text" class="form-control" id="rua" placeholder="Rua" name="rua" [ngModel]="usuario.rua" required
+        <input type="text" class="form-control" id="rua" placeholder="Rua" name="rua" ngModel required
         #rua="ngModel" [class.is-invalid]="!rua.valid && rua.touched">
       </div>
       <app-campo-control-erro mensagemErro="Rua é obrigatório." 
