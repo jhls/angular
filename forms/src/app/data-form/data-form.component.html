@@ -17,8 +17,15 @@
         <input type="email" class="form-control" id="email" placeholder="nome@email.com" formControlName="email">
       </div>
     </div>
-    <button type="submit" class="btn btn-primary" >Submit</button>
-
+    <br>
+    <div class="row col-sm-6">
+      <div class="col-sm-3">
+        <button type="submit" class="btn btn-primary" >Submit</button>
+      </div>
+      <div class="col-sm-3">
+        <button class="btn btn-primary" (click)="resetar()" > Cancelar</button>
+      </div>
+    </div>
     <app-form-debug [form]="formulario"></app-form-debug>
 
 </form>
