@@ -1,6 +1,5 @@
 <form (ngSubmit)="onSubmit(f)" #f="ngForm" class="row mb-15">
-  <div class="form-group" [ngClass]="aplicaCssErro(nome)"
-  >
+  <div class="form-group" [ngClass]="aplicaCssErro(nome)">
     <div class="col-sm-12 col-form-label">
       <label for="nome">Nome</label>
     </div>
@@ -8,7 +7,7 @@
       <input type="text" class="form-control" id="nome" placeholder="Nome" name="nome" [ngModel]="usuario.nome" required
        #nome="ngModel" [class.is-invalid]="!nome.valid && nome.touched">
     </div>
-    <app-campo-control-erro mensagemErro="Nome é obrigatório." 
+    <app-campo-control-erro mensagemErro="Nome é obrigatório."
     [mostrarErro]="verificaValidTouched(nome)">
     </app-campo-control-erro>
   </div>
@@ -25,7 +24,7 @@
       #email="ngModel"
       [class.is-invalid]="!email.valid && email.touched"
       >
-      <app-campo-control-erro mensagemErro="Email inválido." 
+      <app-campo-control-erro mensagemErro="Email inválido."
         [mostrarErro]="verificaValidTouched(email)">
       </app-campo-control-erro>
     </div>
@@ -39,7 +38,7 @@
         #cep="ngModel" [class.is-invalid]="!cep.valid && cep.touched"
         (blur)="consultaCEP($event.target,f)"
         />
-        <app-campo-control-erro mensagemErro="CEP é obrigatório." 
+        <app-campo-control-erro mensagemErro="CEP é obrigatório."
           [mostrarErro]="verificaValidTouched(cep)">
         </app-campo-control-erro>
       </div>
@@ -48,7 +47,7 @@
         <label for="numero" class="col-sm-3 col-form-label" >Número</label>
         <input type="text" class="form-control" id="numero" name="numero" ngModel required
         #numero="ngModel" [class.is-invalid]="!numero.valid && numero.touched"/>
-        <app-campo-control-erro mensagemErro="Número é obrigatório." 
+        <app-campo-control-erro mensagemErro="Número é obrigatório."
           [mostrarErro]="verificaValidTouched(numero)">
         </app-campo-control-erro>
       </div>
@@ -68,7 +67,7 @@
         <input type="text" class="form-control" id="rua" placeholder="Rua" name="rua" ngModel required
         #rua="ngModel" [class.is-invalid]="!rua.valid && rua.touched">
       </div>
-      <app-campo-control-erro mensagemErro="Rua é obrigatório." 
+      <app-campo-control-erro mensagemErro="Rua é obrigatório."
           [mostrarErro]="verificaValidTouched(rua)">
         </app-campo-control-erro>
     </div>
@@ -78,7 +77,7 @@
         <input type="text" class="form-control" id="bairro" name="bairro" ngModel required
         #bairro="ngModel" [class.is-invalid]="!bairro.valid && bairro.touched"/>
 
-        <app-campo-control-erro mensagemErro="Bairro é obrigatório." 
+        <app-campo-control-erro mensagemErro="Bairro é obrigatório."
           [mostrarErro]="verificaValidTouched(bairro)">
         </app-campo-control-erro>
       </div>
@@ -86,7 +85,7 @@
         <label for="cidade" class="col-sm-3 col-form-label" >Cidade</label>
         <input type="text" class="form-control" id="cidade" name="cidade" ngModel required
         #cidade="ngModel" [class.is-invalid]="!cidade.valid && cidade.touched"/>
-        <app-campo-control-erro mensagemErro="Cidade é obrigatório." 
+        <app-campo-control-erro mensagemErro="Cidade é obrigatório."
           [mostrarErro]="verificaValidTouched(cidade)">
         </app-campo-control-erro>
       </div>
@@ -95,7 +94,7 @@
         <label for="estado" class="col-sm-3 col-form-label" >Estado</label>
         <input type="text" class="form-control" id="estado" name="estado" ngModel required
         #estado="ngModel" [class.is-invalid]="!estado.valid && estado.touched"/>
-        <app-campo-control-erro mensagemErro="Estado é obrigatório." 
+        <app-campo-control-erro mensagemErro="Estado é obrigatório."
           [mostrarErro]="verificaValidTouched(estado)">
         </app-campo-control-erro>
       </div>

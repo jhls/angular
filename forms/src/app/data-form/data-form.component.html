@@ -1,20 +1,28 @@
-<form class="row mb-15" [formGroup]="formulario" (ngSubmit)="onSubmit()">
-    <div class="form-group">
+<form class="row mb-15" [formGroup]="formulario" (ngSubmit)="onSubmit()" >
+    <div class="form-group" [ngClass]="aplicaCssErro('nome')">
       <div class="col-sm-12 col-form-label">
         <label for="nome">Nome</label>
       </div>
       <div class="col-sm-12">
-        <input type="text" class="form-control" id="nome" placeholder="Nome" formControlName="nome" >
+        <input type="text" class="form-control" id="nome" placeholder="Nome" formControlName="nome"  [ngClass]="aplicaCssErro('nome')">
+          <app-campo-control-erro mensagemErro="Nome é obrigatório." [mostrarErro]="verificaValidTouched('nome')">
+          </app-campo-control-erro>
       </div>
+
     </div>
     <br>
 
-    <div class="form-group">
+    <div class="form-group" [ngClass]="aplicaCssErro('email')">
       <div class="col-sm-12 col-form-label">
         <label for="email">Email</label>
       </div>
       <div class="col-sm-12">
-        <input type="email" class="form-control" id="email" placeholder="nome@email.com" formControlName="email">
+        <input type="email" class="form-control" id="email" placeholder="nome@email.com" formControlName="email" [ngClass]="aplicaCssErro('email')">
+        <app-campo-control-erro mensagemErro="Email é obrigatório." [mostrarErro]="verificaValidTouched('email')">
+        </app-campo-control-erro>
+
+        <app-campo-control-erro mensagemErro="Email é invalido." [mostrarErro]="verificaEmailInvalido()">
+        </app-campo-control-erro>
       </div>
     </div>
     <br>
