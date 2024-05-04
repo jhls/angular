@@ -4,28 +4,26 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { map } from 'rxjs/operators';
 import { EstadoBr } from '../shared/models/estado-br';
+import { ConsultaCepService } from '../shared/services/consulta-cep.service';
 
 @Component({
   selector: 'app-data-form',
   templateUrl: './data-form.component.html',
-  styleUrls: ['./data-form.component.scss']
+  styleUrls: ['./data-form.component.scss'],
 })
 export class DataFormComponent implements OnInit {
-
-  formulario! : FormGroup;
-  estado! : EstadoBr[];
+  formulario!: FormGroup;
+  estado!: EstadoBr[];
 
   constructor(
     private formBuilder: FormBuilder,
     private http: HttpClient,
-    private dropDownService :DropdownService
-  ) { }
+    private dropDownService: DropdownService,
+    private consultaCepService: ConsultaCepService
+  ) {}
 
   ngOnInit(): void {
-
-    this.dropDownService
-    .getEstadosBr()
-    .subscribe(dados => {
+    this.dropDownService.getEstadosBr().subscribe((dados) => {
       this.estado = dados;
       console.log(dados);
     });
@@ -37,89 +35,87 @@ export class DataFormComponent implements OnInit {
     });*/
 
     this.formulario = this.formBuilder.group({
-      nome: [null,[Validators.required]],
-      email: [null,[Validators.required,Validators.email]],
+      nome: [null, [Validators.required]],
+      email: [null, [Validators.required, Validators.email]],
       endereco: this.formBuilder.group({
-        cep: [null,[Validators.required]],
-        numero: [null,[Validators.required]],
-        complemento:[null],
-        rua: [null,[Validators.required]],
-        bairro: [null,[Validators.required]],
-        cidade: [null,[Validators.required]],
-        estado: [null,[Validators.required]]
-      })
-    })
+        cep: [null, [Validators.required]],
+        numero: [null, [Validators.required]],
+        complemento: [null],
+        rua: [null, [Validators.required]],
+        bairro: [null, [Validators.required]],
+        cidade: [null, [Validators.required]],
+        estado: [null, [Validators.required]],
+      }),
+    });
   }
 
-  onSubmit(){
+  onSubmit() {
     console.log(this.formulario);
 
-    if(this.formulario.valid){
-      this.http.post('https://httpbin.org/post',JSON.stringify(this.formulario.value))
-      .pipe(map(resp => resp))
-      .subscribe(dados => {
+    if (this.formulario.valid) {
+      this.http
+        .post('https://httpbin.org/post', JSON.stringify(this.formulario.value))
+        .pipe(map((resp) => resp))
+        .subscribe(
+          (dados) => {
+            console.log(dados);
 
-        console.log(dados);
-
-        //reseta o form
-        this.resetar();
-
-      },
-      (erro: any) => alert('erro'));
-    }else{
+            //reseta o form
+            this.resetar();
+          },
+          (erro: any) => alert('erro')
+        );
+    } else {
       console.log('formulario invalido');
-      Object.keys(this.formulario.controls).forEach(campo =>{
+      Object.keys(this.formulario.controls).forEach((campo) => {
         console.log(campo);
         const controle = this.formulario.get(campo);
         controle?.markAsDirty();
       });
     }
-
   }
 
-  resetar(){
+  resetar() {
     this.formulario.reset();
   }
 
-  verificaValidTouched(campo: string){
-    return !this.formulario.get(campo)?.valid && (!!this.formulario.get(campo)?.touched || !!this.formulario.get(campo)?.dirty);
+  verificaValidTouched(campo: string) {
+    return (
+      !this.formulario.get(campo)?.valid &&
+      (!!this.formulario.get(campo)?.touched ||
+        !!this.formulario.get(campo)?.dirty)
+    );
   }
 
-  verificaEmailInvalido(){
+  verificaEmailInvalido() {
     let campoEmail = this.formulario.get('email');
-    if(campoEmail?.errors){
-       return campoEmail.hasError('email') && campoEmail.touched;
-    }else{
+    if (campoEmail?.errors) {
+      return campoEmail.hasError('email') && campoEmail.touched;
+    } else {
       return false;
     }
   }
 
-  aplicaCssErro(campo : string){
+  aplicaCssErro(campo: string) {
     return {
-        'has-error': this.verificaValidTouched(campo),
-        'has-feedback': this.verificaValidTouched(campo)
-    }
+      'has-error': this.verificaValidTouched(campo),
+      'has-feedback': this.verificaValidTouched(campo),
+    };
   }
 
-  consultaCEP(){
+  consultaCEP() {
     var cep = this.formulario.get('endereco.cep')?.value;
-    cep = cep.replace(/\D/g,'');
+    cep = cep.replace(/\D/g, '');
 
-    if(cep  != ""){
-      var validaCep = /^[0-9]{8}$/;
-      if(validaCep.test(cep)){
-        this.resetaDadosFormulario();
-        this.http.get(`//viacep.com.br/ws/${cep}/json/`)
-          .pipe(map((dados: any) => dados))
-          .subscribe(dados => this.populaDadosForm(dados));
-      }
-
-      //this.formulario.get('nome')?.setValue('teste');
+    if (cep != null && cep !== '') {
+      this.consultaCepService
+        .consultaCEP(cep)
+        ?.subscribe((dados) => this.populaDadosForm(dados));
     }
+    //this.formulario.get('nome')?.setValue('teste');
   }
 
-
-  populaDadosForm(dados:any){
+  populaDadosForm(dados: any) {
     this.formulario.patchValue({
       endereco: {
         rua: dados.logradouro,
@@ -127,21 +123,20 @@ export class DataFormComponent implements OnInit {
         complemento: dados.complemento,
         bairro: dados.bairro,
         cidade: dados.localidade,
-        estado: dados.uf
-      }
-    })
+        estado: dados.uf,
+      },
+    });
   }
 
-  resetaDadosFormulario(){
+  resetaDadosFormulario() {
     this.formulario.patchValue({
       endereco: {
         rua: null,
         complemento: null,
         bairro: null,
         cidade: null,
-        estado: null
-      }
-    })
+        estado: null,
+      },
+    });
   }
-
 }
