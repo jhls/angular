@@ -13,8 +13,10 @@ import { Observable } from 'rxjs';
   styleUrls: ['./data-form.component.scss'],
 })
 export class DataFormComponent implements OnInit {
+
   formulario!: FormGroup;
   estados!: Observable<EstadoBr[]>;
+  cargos!:any[];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -26,6 +28,7 @@ export class DataFormComponent implements OnInit {
   ngOnInit(): void {
 
     this.estados = this.dropDownService.getEstadosBr();
+    this.cargos = this.dropDownService.getCargos();
     /*
     this.dropDownService.getEstadosBr().subscribe((dados) => {
       this.estados = dados;
@@ -50,6 +53,7 @@ export class DataFormComponent implements OnInit {
         cidade: [null, [Validators.required]],
         estado: [null, [Validators.required]],
       }),
+      cargo: [null]
     });
   }
 
@@ -142,5 +146,14 @@ export class DataFormComponent implements OnInit {
         estado: null,
       },
     });
+  }
+
+  setarCargo(){
+    const cargo ={ nome: 'Dev', nivel: 'Pleno', desc: 'Dev Pl' };
+    this.formulario.get('cargo')?.setValue(cargo);
+  }
+
+  compararCargos(o1: any, o2:any){
+    return o1 && o2 ? (o1.nome === o2.nome && o1.nivel === o2.nivel): o1 === o2;
   }
 }
