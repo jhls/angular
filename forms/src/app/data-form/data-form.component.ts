@@ -17,6 +17,8 @@ export class DataFormComponent implements OnInit {
   formulario!: FormGroup;
   estados!: Observable<EstadoBr[]>;
   cargos!:any[];
+  tecnologias!:any[];
+  newsletterOp!: any[];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -29,6 +31,8 @@ export class DataFormComponent implements OnInit {
 
     this.estados = this.dropDownService.getEstadosBr();
     this.cargos = this.dropDownService.getCargos();
+    this.tecnologias = this.dropDownService.getTecnologias();
+    this.newsletterOp = this.dropDownService.getNewsletter();
     /*
     this.dropDownService.getEstadosBr().subscribe((dados) => {
       this.estados = dados;
@@ -53,7 +57,9 @@ export class DataFormComponent implements OnInit {
         cidade: [null, [Validators.required]],
         estado: [null, [Validators.required]],
       }),
-      cargo: [null]
+      cargo: [null],
+      tecnologias: [null],
+      newsletter: ['s']
     });
   }
 
@@ -153,7 +159,15 @@ export class DataFormComponent implements OnInit {
     this.formulario.get('cargo')?.setValue(cargo);
   }
 
+  setarTecnologias(){
+    this.formulario.get('tecnologias')?.setValue(['java','javascript','php']);
+  }
+
   compararCargos(o1: any, o2:any){
     return o1 && o2 ? (o1.nome === o2.nome && o1.nivel === o2.nivel): o1 === o2;
   }
+
+  // compararTecnologias(o1: any, o2:any){
+  //   return o1 && o2 ? (o1.nome === o2.nome && o1.desc === o2.desc): o1 === o2;
+  // }
 }
