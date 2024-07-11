@@ -1,4 +1,4 @@
-import { AbstractControl, FormArray, FormControl, ValidatorFn } from "@angular/forms";
+import { AbstractControl, FormArray, FormControl, FormGroup, ValidatorFn } from "@angular/forms";
 
 export class FormValidations {
   static requiredMinCheckBox(min = 1): ValidatorFn{
@@ -28,5 +28,32 @@ export class FormValidations {
 
     }
     return null;
+  }
+
+  static equalsTo(otherField:string){
+
+    if(!otherField){
+      throw new Error('É necessário informar um campo!')
+    }
+
+    const validator: ValidatorFn = (formControl: AbstractControl) => {
+      if(formControl instanceof FormControl){
+
+        if(!formControl.root || !(<FormGroup>formControl.root).controls){
+          return null;
+        }
+
+        const fieldPai = (<FormGroup>formControl.root).get(otherField);
+
+        if(!fieldPai){
+          throw new Error('É necessário informar um campo válido!')
+        }
+
+        return formControl.value === fieldPai.value? null: {equalsTo:otherField};
+
+      }
+      throw new Error('formControl is not an instance of FormControl');
+    }
+    return validator;
   }
 }
