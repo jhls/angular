@@ -51,7 +51,7 @@ export class DataFormComponent implements OnInit {
       nome: [null, [Validators.required]],
       email: [null, [Validators.required, Validators.email]],
       endereco: this.formBuilder.group({
-        cep: [null, [Validators.required]],
+        cep: [null, [Validators.required, FormValidations.cepValidator]],
         numero: [null, [Validators.required]],
         complemento: [null],
         rua: [null, [Validators.required]],
@@ -189,6 +189,12 @@ export class DataFormComponent implements OnInit {
 
   compararCargos(o1: any, o2:any){
     return o1 && o2 ? (o1.nome === o2.nome && o1.nivel === o2.nivel): o1 === o2;
+  }
+
+  verificaRequired(campo:string){
+    return this.formulario.get(campo)?.hasError('required') &&
+    (!!this.formulario.get(campo)?.touched ||
+      !!this.formulario.get(campo)?.dirty);
   }
 
   // compararTecnologias(o1: any, o2:any){
